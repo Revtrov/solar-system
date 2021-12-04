@@ -94,7 +94,7 @@ let planets = [
     addSphere("images/mercury.jpg", 4879 / 2, 57900000, 0, 0),
     addSphere("images/venus.jpg", 12104 / 2, -108200000, -5, 0),
     addSphere("images/earth.jpg", 12756 / 2, 149600000, 10, 0),
-    addSphere("images/mars.jpg", 687905 / 2, -227900000, 5, 0),
+    addSphere("images/mars.jpg", 6879 / 2, -227900000, 5, 0),
     addSphere("images/jupiter.jpg", 142984 / 2, 778600000, -20, 0),
     addSphere("images/saturn.jpg", 120536 / 2, -1433500000, -10, 0),
     addSphere("images/uranus.jpg", 51104118 / 2, 2872500000, -20, 0),
@@ -172,13 +172,13 @@ let planetUpdate = () => {
 
     }
     // anim loop
-let zoom = 0;
+let zoom = 5000;
 let index = 0;
 document.addEventListener("keydown", (e) => {
     if (e.key == "ArrowDown") {
         zoom += 5000;
     }
-    if (e.key == "ArrowUp" && zoom >= 10) {
+    if (e.key == "ArrowUp" && zoom >= 5000) {
         zoom -= 5000;
     }
     if (e.key == "ArrowLeft") {
@@ -230,9 +230,9 @@ function animate() {
     rotateAboutPoint(planetCores[7], new THREE.Vector3(0, -1, 0), new THREE.Vector3(0, 1, 0), 0.0001, true);
     planetUpdate();
     if (index != 0) {
-        camera.position.x = planets[index - 1].position.x + planets[index - 1].geometry.parameters.radius * 4 + zoom;
+        camera.position.x = planets[index - 1].position.x + planets[index - 1].geometry.parameters.radius + zoom;
         camera.position.y = planets[index - 1].position.y;
-        camera.position.z = planets[index - 1].position.z + planets[index - 1].geometry.parameters.radius * 4 + zoom;
+        camera.position.z = planets[index - 1].position.z + planets[index - 1].geometry.parameters.radius + zoom;
         camera.lookAt(planets[index - 1].position)
     } else {
         camera.position.x = 0 - sun.geometry.parameters.radius * 4;
