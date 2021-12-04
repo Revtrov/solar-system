@@ -62,7 +62,7 @@ scene.add(sky);
 const sunTexture = new THREE.TextureLoader().load("images/sun.jpg");
 const sun = new THREE.Mesh(
     new THREE.SphereGeometry(1392000 / 2, 320, 320),
-    new THREE.MeshBasicMaterial({ map: sunTexture, emissive: 0xf5902c, emissiveIntensity: 0.5 })
+    new THREE.MeshBasicMaterial({ map: sunTexture, transparent: false }),
 );
 scene.add(sun);
 // https://stemkoski.github.io/Three.js/
@@ -74,7 +74,7 @@ var spriteMaterial = new THREE.SpriteMaterial({
     opacity: 0.6
 });
 var sprite = new THREE.Sprite(spriteMaterial);
-sprite.scale.set(13920000, 13920000, 5.0);
+sprite.scale.set((1392000 / 2) * 10, (1392000 / 2) * 10, 1.0);
 sun.add(sprite); // this centers the glow at the mesh
 
 function addSphere(textureURL, radius, x, y, z) {
@@ -94,7 +94,7 @@ let planets = [
     addSphere("images/mars.jpg", 6879 / 2, -227900000, 5, 0),
     addSphere("images/jupiter.jpg", 142984 / 2, 778600000, -20, 0),
     addSphere("images/saturn.jpg", 120536 / 2, -1433500000, -10, 0),
-    addSphere("images/uranus.jpg", 51104118 / 2, 2872500000, -20, 0),
+    addSphere("images/uranus.jpg", 51104 / 2, 2872500000, -20, 0),
     addSphere("images/neptune.jpg", 49528 / 2, -4495100000, 30, 0),
 ]
 let planetCores = [
@@ -169,14 +169,14 @@ let planetUpdate = () => {
 
     }
     // anim loop
-let zoom = 5000;
+let zoom = 2;
 let index = 0;
 document.addEventListener("keydown", (e) => {
     if (e.key == "ArrowDown") {
-        zoom += 5000;
+        zoom += 1;
     }
-    if (e.key == "ArrowUp" && zoom >= 5000) {
-        zoom -= 5000;
+    if (e.key == "ArrowUp" && zoom >= 2) {
+        zoom -= 1;
     }
     if (e.key == "ArrowLeft") {
         if (index >= 0 && index <= planets.length) {
@@ -227,12 +227,12 @@ function animate() {
     rotateAboutPoint(planetCores[7], new THREE.Vector3(0, -1, 0), new THREE.Vector3(0, 1, 0), 0.0001, true);
     planetUpdate();
     if (index != 0) {
-        camera.position.x = planets[index - 1].position.x + planets[index - 1].geometry.parameters.radius + zoom;
+        camera.position.x = planets[index - 1].position.x + planets[index - 1].geometry.parameters.radius * zoom;
         camera.position.y = planets[index - 1].position.y;
-        camera.position.z = planets[index - 1].position.z + planets[index - 1].geometry.parameters.radius + zoom;
+        camera.position.z = planets[index - 1].position.z + planets[index - 1].geometry.parameters.radius * zoom;
         camera.lookAt(planets[index - 1].position)
     } else {
-        camera.position.x = 0 - sun.geometry.parameters.radius * 4;
+        camera.position.x = sun.position.x - sun.geometry.parameters.radius * 4 * zoom;
         camera.position.y = 0;
         camera.position.z = 0;
         camera.lookAt(sun.position)
