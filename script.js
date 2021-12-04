@@ -4,7 +4,7 @@ import { STLLoader } from './STLLoader.js';
 
 //scene
 const scene = new THREE.Scene(),
-    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 10000),
+    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 600000000),
     renderer = new THREE.WebGLRenderer({
         canvas: document.getElementById("bg"),
     });
@@ -57,14 +57,14 @@ Array(1000).fill().forEach(addStar)
 // moon
 const skyTexture = new THREE.TextureLoader().load("images/background.jpg");
 const sky = new THREE.Mesh(
-    new THREE.SphereGeometry(3000, 32, 32),
+    new THREE.SphereGeometry(300000000000, 32, 32),
     new THREE.MeshStandardMaterial({ map: skyTexture, })
 );
 sky.material.side = THREE.DoubleSide;
 scene.add(sky);
 const sunTexture = new THREE.TextureLoader().load("images/sun.jpg");
 const sun = new THREE.Mesh(
-    new THREE.SphereGeometry(50, 32, 32),
+    new THREE.SphereGeometry(1392000 / 2, 320, 320),
     new THREE.MeshBasicMaterial({ map: sunTexture, emissive: 0xf5902c, emissiveIntensity: 0.5 })
 );
 scene.add(sun);
@@ -91,24 +91,24 @@ function addSphere(textureURL, radius, x, y, z) {
     return sphere;
 }
 let planets = [
-    addSphere("images/mercury.jpg", 2, 100, 0, 0),
-    addSphere("images/venus.jpg", 6, -350, -5, 0),
-    addSphere("images/earth.jpg", 7, 500, 10, 0),
-    addSphere("images/mars.jpg", 5, -850, 5, 0),
-    addSphere("images/jupiter.jpg", 50, 1000, -20, 0),
-    addSphere("images/saturn.jpg", 45, -1350, -10, 0),
-    addSphere("images/uranus.jpg", 30, 1600, -20, 0),
-    addSphere("images/neptune.jpg", 35, -1950, 30, 0),
+    addSphere("images/mercury.jpg", 4879 / 2, 57900000, 0, 0),
+    addSphere("images/venus.jpg", 12104 / 2, -108200000, -5, 0),
+    addSphere("images/earth.jpg", 12756 / 2, 149600000, 10, 0),
+    addSphere("images/mars.jpg", 687905 / 2, -227900000, 5, 0),
+    addSphere("images/jupiter.jpg", 142984 / 2, 778600000, -20, 0),
+    addSphere("images/saturn.jpg", 120536 / 2, -1433500000, -10, 0),
+    addSphere("images/uranus.jpg", 51104118 / 2, 2872500000, -20, 0),
+    addSphere("images/neptune.jpg", 49528 / 2, -4495100000, 30, 0),
 ]
 let planetCores = [
-        addSphere("", 0, 100, 0, 0),
-        addSphere("", 0, -350, -5, 0),
-        addSphere("", 0, 500, 10, 0),
-        addSphere("", 0, -850, 5, 0),
-        addSphere("", 0, 1000, -20, 0),
-        addSphere("", 0, -1350, -10, 0),
-        addSphere("", 0, 1600, -20, 0),
-        addSphere("", 0, -1950, 30, 0),
+        addSphere("", 0, 57900000, 0, 0),
+        addSphere("", 0, -108200000, -5, 0),
+        addSphere("", 0, 149600000, 10, 0),
+        addSphere("", 0, -227900000, 5, 0),
+        addSphere("", 0, 778600000, -20, 0),
+        addSphere("", 0, -1433500000, -10, 0),
+        addSphere("", 0, 2872500000, -20, 0),
+        addSphere("", 0, -4495100000, 30, 0),
     ] // stl loader
 let model;
 
@@ -156,44 +156,61 @@ function rotateAboutPoint(obj, point, axis, theta, pointIsWorld) {
 
     obj.rotateOnAxis(axis, theta); // rotate the OBJECT
 }
+
+function degreesRadians(degrees) {
+    var pi = Math.PI;
+    return degrees * (pi / 180);
+}
 let planetUpdate = () => {
-        for (let i = 0; i < planets.length - 1; i++) {
-            planets[i].position.x = planetCores.position.x;
-            planets[i].position.y = planetCores.position.y;
-            planets[i].position.z = planetCores.position.z;
-            planets[i].rotation.y += 0.1
+        for (let i = 0; i < planets.length; i++) {
+            planets[i].position.x = planetCores[i].position.x;
+            planets[i].position.y = planetCores[i].position.y;
+            planets[i].position.z = planetCores[i].position.z;
+            planets[i].rotateY(0.01);
         }
+        //tilt
+
     }
     // anim loop
 let zoom = 0;
 let index = 0;
 document.addEventListener("keydown", (e) => {
     if (e.key == "ArrowDown") {
-        zoom += 1;
+        zoom += 5000;
     }
     if (e.key == "ArrowUp" && zoom >= 10) {
-        zoom -= 1;
+        zoom -= 5000;
     }
     if (e.key == "ArrowLeft") {
-        if (index >= 1 && index <= planets.length - 1) {
+        if (index >= 0 && index <= planets.length) {
             index--;
         }
-        if (index == 0) {
-            index = planets.length - 1;
+        if (index < 0) {
+            index = planets.length;
         }
-        if (index > planets.length - 1) {
+        if (index > planets.length) {
             index = 0;
         }
     }
     if (e.key == "ArrowRight") {
-        if (index >= 0 && index <= planets.length - 2) {
-            index--;
+        if (index >= 0 && index <= planets.length) {
+            index++;
         }
-        if (index > planets.length - 1) {
+        if (index > planets.length) {
             index = 0;
         }
     }
 })
+
+
+planets[0].rotateZ(degreesRadians(0.01));
+planets[1].rotateZ(degreesRadians(2.64));
+planets[2].rotateZ(degreesRadians(23.44));
+planets[3].rotateZ(degreesRadians(25.19));
+planets[4].rotateZ(degreesRadians(3.12));
+planets[5].rotateZ(degreesRadians(10.66));
+planets[6].rotateZ(degreesRadians(82.23));
+planets[7].rotateZ(degreesRadians(28.33));
 
 function animate() {
     requestAnimationFrame(animate);
@@ -202,9 +219,6 @@ function animate() {
     // for (let i = 0; i < planets.length; i++) {
     //     rotateAboutPoint(planets[i], new THREE.Vector3(0, -1, 0), new THREE.Vector3(0, 1, 0), 0.1 - 0.01 * i, true);
     // }
-    for (let i = 0; i < planets.length; i++) {
-        planets[i].rotation.y += 0.01
-    }
     sun.rotation.y += 0.01
     rotateAboutPoint(planetCores[0], new THREE.Vector3(0, -1, 0), new THREE.Vector3(0, 1, 0), 0.0075, true);
     rotateAboutPoint(planetCores[1], new THREE.Vector3(0, -1, 0), new THREE.Vector3(0, 1, 0), 0.0065, true);
@@ -214,11 +228,21 @@ function animate() {
     rotateAboutPoint(planetCores[5], new THREE.Vector3(0, -1, 0), new THREE.Vector3(0, 1, 0), 0.0004, true);
     rotateAboutPoint(planetCores[6], new THREE.Vector3(0, -1, 0), new THREE.Vector3(0, 1, 0), 0.0002, true);
     rotateAboutPoint(planetCores[7], new THREE.Vector3(0, -1, 0), new THREE.Vector3(0, 1, 0), 0.0001, true);
-    camera.position.x = planets[index].position.x - planets[index].geometry.parameters.radius * 4 - zoom;
-    camera.position.y = planets[index].position.y;
-    camera.position.z = planets[index].position.z - planets[index].geometry.parameters.radius * 4 - zoom;
-    camera.lookAt(planets[2].position)
-    console.log(camera.position);
+    planetUpdate();
+    if (index != 0) {
+        camera.position.x = planets[index - 1].position.x + planets[index - 1].geometry.parameters.radius * 4 + zoom;
+        camera.position.y = planets[index - 1].position.y;
+        camera.position.z = planets[index - 1].position.z + planets[index - 1].geometry.parameters.radius * 4 + zoom;
+        camera.lookAt(planets[index - 1].position)
+    } else {
+        camera.position.x = 0 - sun.geometry.parameters.radius * 4;
+        camera.position.y = 0;
+        camera.position.z = 0;
+        camera.lookAt(sun.position)
+    }
+    sky.position.x = camera.position.x;
+    sky.position.y = camera.position.y;
+    sky.position.z = camera.position.x;
     renderer.render(scene, camera);
 }
 
