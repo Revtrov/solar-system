@@ -25,14 +25,11 @@ scene.add(pointLight, ambientLight, /*lightHelper, gridHelper*/ )
 
 // controls
 
-
-
 // background textures
 const spaceTexture = new THREE.TextureLoader().load("images/background.jpg");
 scene.background = spaceTexture;
 
 // objects
-
 
 //scene.add(torus)
 function addTorus(radius, tubeRadius, color) {
@@ -77,13 +74,13 @@ var spriteMaterial = new THREE.SpriteMaterial({
     opacity: 0.6
 });
 var sprite = new THREE.Sprite(spriteMaterial);
-sprite.scale.set(400, 400, 1.0);
+sprite.scale.set(13920000, 13920000, 5.0);
 sun.add(sprite); // this centers the glow at the mesh
 
 function addSphere(textureURL, radius, x, y, z) {
     const sphereTexture = new THREE.TextureLoader().load(textureURL);
     const sphere = new THREE.Mesh(
-        new THREE.SphereGeometry(radius, 32, 32),
+        new THREE.SphereGeometry(radius, 320, 320),
         new THREE.MeshStandardMaterial({ map: sphereTexture, })
     );
     sphere.position.set(x, y, z)
