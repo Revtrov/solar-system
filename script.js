@@ -163,8 +163,16 @@ let planetUpdate = () => {
             planets[i].position.x = planetCores[i].position.x;
             planets[i].position.y = planetCores[i].position.y;
             planets[i].position.z = planetCores[i].position.z;
-            planets[i].rotateY(0.01);
         }
+        planets[0].rotateY(0.01 / 4222.6)
+        planets[1].rotateY(0.01 / 2802.0)
+        planets[2].rotateY(0.01 / 24)
+        planets[3].rotateY(0.01 / 24.7)
+        planets[4].rotateY(0.01 / 9.9)
+        planets[5].rotateY(0.01 / 10.7)
+        planets[6].rotateY(0.01 / 8.7)
+        planets[7].rotateY(0.01 / 11)
+
         //tilt
 
     }
